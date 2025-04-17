@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Envelope for Afrind!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #fce4ec, #e1bee7);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: auto;
+      position: relative;
+    }
+
+    /* Flower Canvas */
+    #flowerCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Envelope Container */
+    .envelope-container {
+      width: 400px;
+      height: 600px;
+      position: relative;
+      perspective: 1000px;
+      margin: 20px;
+      z-index: 2;
+    }
+    .envelope {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: #f8bbd0;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      overflow: visible;
+    }
+    .envelope-flap {
+      width: 100%;
+      height: 40%;
+      background: linear-gradient(135deg, #f06292, #ce93d8);
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: top;
+      transition: transform 0.8s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 3;
+      border-radius: 10px 10px 0 0;
+    }
+    .envelope.open .envelope-flap {
+      transform: rotateX(-180deg);
+    }
+    .envelope-flap h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.5em;
+      color: #fff;
+      text-shadow: 0 0 10px #d81b60;
+      margin-top: 10px;
+    }
+    .envelope-flap .cake {
+      width: 80px;
+      height: 80px;
+      background: url('https://img.icons8.com/color/96/000000/birthday-cake.png') no-repeat center/cover;
+      animation: bounce 3s ease-in-out infinite;
+      margin-top: 10px;
+    }
+
+    /* Card Content */
+    .card-content {
+      width: 100%;
+      height: 100%;
+      background: #fff3e0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 20px;
+      opacity: 0;
+      transition: opacity 0.5s ease 0.8s;
+      z-index: 2;
+      border-radius: 0 0 10px 10px;
+    }
+    .envelope.open .card-content {
+      opacity: 1;
+    }
+    .card-fold {
+      width: 90%;
+      background: #fff;
+      padding: 20px;
+      border: 2px solid #f06292;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.6s ease 0.8s;
+      text-align: center;
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .envelope.open .card-fold {
+      transform: scaleY(1);
+    }
+    .card-fold .cake {
+      width: 100px;
+      height: 100px;
+      background: url('https://img.icons8.com/color/96/000000/birthday-cake.png') no-repeat center/cover;
+      animation: bounce 3s ease-in-out infinite;
+      margin: 10px auto;
+      cursor: pointer;
+    }
+    .card-fold h2 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.8em;
+      color: #d81b60;
+      margin-bottom: 10px;
+    }
+    .card-fold p {
+      font-size: 1em;
+      color: #4a2c40;
+      max-width: 250px;
+      margin: 0 auto 10px;
+    }
+    .card-fold .genie {
+      width: 50px;
+      height: 50px;
+      background: url('https://img.icons8.com/color/48/000000/genie.png') no-repeat center/cover;
+      position: absolute;
+      top: -25px;
+      right: -25px;
+      transform: scale(0);
+      animation: geniePop 1s ease forwards 1s;
+      z-index: 4;
+    }
+    .close-btn {
+      background: #f06292;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.9em;
+      cursor: pointer;
+      margin: 10px 0;
+      transition: background 0.3s;
+    }
+    .close-btn:hover {
+      background: #d81b60;
+    }
+    .site-link {
+      background: #ab47bc;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.9em;
+      cursor: pointer;
+      margin: 10px 0;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    .site-link:hover {
+      background: #8e24aa;
+    }
+
+    /* Balloons */
+    .balloon {
+      position: absolute;
+      width: 40px;
+      height: 60px;
+      border-radius: 50% 50% 40% 40%;
+      animation: float 5s ease-in-out infinite;
+      z-index: 0;
+    }
+    .balloon::before {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      width: 2px;
+      height: 15px;
+      background: #fff;
+      transform: translateX(-50%);
+    }
+    .balloon:nth-child(1) { left: 5%; background: radial-gradient(circle, #f06292, #d81b60); animation-delay: 0s; }
+    .balloon:nth-child(2) { left: 15%; background: radial-gradient(circle, #ffeb3b, #fbc02d); animation-delay: 1s; }
+    .balloon:nth-child(3) { left: 25%; background: radial-gradient(circle, #ab47bc, #8e24aa); animation-delay: 2s; }
+    .balloon:nth-child(4) { right: 5%; background: radial-gradient(circle, #ffccbc, #ff8a80); animation-delay: 0.5s; }
+    .balloon:nth-child(5) { right: 15%; background: radial-gradient(circle, #d8b9ff, #b388ff); animation-delay: 1.5s; }
+    .balloon:nth-child(6) { right: 25%; background: radial-gradient(circle, #a7ffeb, #4db6ac); animation-delay: 2.5s; }
+    .balloon:nth-child(7) { left: 35%; background: radial-gradient(circle, #ff8a80, #f06292); animation-delay: 3s; }
+    .balloon:nth-child(8) { right: 35%; background: radial-gradient(circle, #b388ff, #ab47bc); animation-delay: 3.5s; }
+
+    /* Sparkles */
+    .sparkle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, #fff, transparent);
+      border-radius: 50%;
+      animation: sparkle 2s ease-in-out infinite;
+      z-index: 0;
+    }
+    .sparkle:nth-child(9) { top: 15%; left: 20%; animation-delay: 0s; }
+    .sparkle:nth-child(10) { top: 25%; right: 15%; animation-delay: 0.5s; }
+    .sparkle:nth-child(11) { bottom: 20%; left: 25%; animation-delay: 1s; }
+    .sparkle:nth-child(12) { bottom: 15%; right: 20%; animation-delay: 1.5s; }
+
+    /* Animations */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(5deg); }
+      50% { transform: translateY(-15px) rotate(-5deg); }
+    }
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes geniePop {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      .envelope-container {
+        width: 300px;
+        height: 450px;
+      }
+      .envelope-flap h1 {
+        font-size: 2em;
+      }
+      .envelope-flap .cake {
+        width: 60px;
+        height: 60px;
+      }
+      .card-fold .cake {
+        width: 80px;
+        height: 80px;
+      }
+      .card-fold h2 {
+        font-size: 1.5em;
+      }
+      .card-fold p {
+        font-size: 0.9em;
+      }
+      .card-fold .genie {
+        width: 40px;
+        height: 40px;
+        top: -20px;
+        right: -20px;
+      }
+      .balloon, .sparkle {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="flowerCanvas"></canvas>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="sparkle"></div>
+  <div class="sparkle"></div>
+  <div class="sparkle"></div>
+  <div class="sparkle"></div>
+
+  <div class="envelope-container">
+    <div class="envelope" id="envelope">
+      <div class="envelope-flap">
+        <h1>Happy Birthday, Afrind!</h1>
+        <div class="cake"></div>
+      </div>
+      <div class="card-content">
+        <div class="card-fold">
+          <div class="cake"></div>
+          <h2>Sweetest Wishes!</h2>
+          <p id="cardMessage">May your day bloom with happiness and magic!</p>
+          <div class="genie"></div>
+        </div>
+        <button class="close-btn" onclick="toggleCard()">Close Card</button>
+        <a href="index.html" class="site-link">Visit Birthday Site</a>
+      </div>
+    </div>
+  </div>
+
+  <svg>
+    <defs>
+      <clipPath id="scallop">
+        <path d="M0,10 C5,0 15,0 20,10 C25,20 35,20 40,10 C45,0 55,0 60,10 C65,20 75,20 80,10 C85,0 95,0 100,10 C105,20 115,20 120,10 C125,0 135,0 140,10 C145,20 155,20 160,10 C165,0 175,0 180,10 C185,20 195,20 200,10 C200,150 200,150 0,150 C0,150 0,150 0,10 Z" />
+      </clipPath>
+    </defs>
+  </svg>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    // Flower Animation
+    const canvas = document.getElementById('flowerCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const flowers = [];
+    const flowerColors = ['#f06292', '#ab47bc', '#ffeb3b', '#80deea', '#ffccbc', '#d8b9ff'];
+
+    function createFlower() {
+      return {
+        x: Math.random() * canvas.width,
+        y: -20,
+        speed: 1 + Math.random() * 2,
+        opacity: 0.7 + Math.random() * 0.3,
+        scale: 0.5 + Math.random() * 0.5,
+        rotation: Math.random() * 360,
+        rotationSpeed: (Math.random() - 0.5) * 5,
+        color: flowerColors[Math.floor(Math.random() * flowerColors.length)]
+      };
+    }
+
+    function drawFlower(flower) {
+      ctx.save();
+      ctx.globalAlpha = flower.opacity;
+      ctx.translate(flower.x, flower.y);
+      ctx.rotate((flower.rotation * Math.PI) / 180);
+      ctx.scale(flower.scale, flower.scale);
+      ctx.beginPath();
+      ctx.arc(0, 0, 15, 0, Math.PI * 2);
+      ctx.fillStyle = flower.color;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function updateFlowers() {
+      if (Math.random() < 0.1) flowers.push(createFlower());
+      flowers.forEach((flower, i) => {
+        flower.y += flower.speed;
+        flower.rotation += flower.rotationSpeed;
+        flower.opacity = Math.max(0, flower.opacity - (flower.y / canvas.height) * 0.01);
+        if (flower.y > canvas.height || flower.opacity <= 0) flowers.splice(i, 1);
+      });
+    }
+
+    function animateFlowers() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      updateFlowers();
+      flowers.forEach(drawFlower);
+      requestAnimationFrame(animateFlowers);
+    }
+
+    animateFlowers();
+
+    // Initialize message
+    let cardMessage = 'May your day bloom with happiness and magic!';
+    localStorage.removeItem('cardMessage');
+    document.getElementById('cardMessage').textContent = cardMessage;
+
+    // Toggle envelope open/close
+    function toggleCard() {
+      const envelope = document.getElementById('envelope');
+      envelope.classList.toggle('open');
+      if (envelope.classList.contains('open')) {
+        confetti({
+          particleCount: 100,
+          spread: 60,
+          colors: ['#f06292', '#ab47bc', '#ffeb3b'],
+          shapes: ['heart', 'circle']
+        });
+      }
+    }
+
+    // Cake click for sparkles
+    document.querySelector('.card-fold .cake').addEventListener('click', () => {
+      confetti({
+        particleCount: 50,
+        spread: 40,
+        colors: ['#ffeb3b', '#f06292'],
+        shapes: ['star']
+      });
+    });
+
+    // Click flap to open
+    document.querySelector('.envelope-flap').addEventListener('click', toggleCard);
+
+    // Resize canvas
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
