@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday, Afrind!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Parisienne&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #fce4ec, #e1bee7);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      padding: 20px;
+      position: relative;
+    }
+    .container {
+      max-width: 900px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 4em;
+      color: #d81b60;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2), 0 0 10px #f06292;
+      margin-bottom: 20px;
+      animation: fadeIn 2s ease-in;
+    }
+    p {
+      font-size: 1.2em;
+      color: #4a2c40;
+      margin-bottom: 20px;
+    }
+
+    /* Cake Animation */
+    .cake {
+      width: 200px;
+      height: 200px;
+      background: url('https://img.icons8.com/color/96/000000/birthday-cake.png') no-repeat center/cover;
+      margin: 20px auto;
+      animation: bounce 3s ease-in-out infinite;
+      position: relative;
+      z-index: 1;
+      border-radius: 20px;
+      background-color: rgba(255, 255, 255, 0.3);
+      padding: 10px;
+    }
+    .cake::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(255, 182, 193, 0.4), transparent);
+      transform: translate(-50%, -50%);
+      z-index: -1;
+    }
+
+    /* Candle Animation */
+    .candle {
+      position: absolute;
+      width: 20px;
+      height: 40px;
+      background: #fff;
+      border-radius: 5px;
+      top: -50px;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+    .candle::before {
+      content: '';
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      width: 10px;
+      height: 15px;
+      background: radial-gradient(circle, #ffeb3b, #f57c00);
+      border-radius: 50%;
+      transform: translateX(-50%);
+      animation: flicker 1.5s ease-in-out infinite;
+      box-shadow: 0 0 10px #f57c00, 0 0 20px #ffeb3b;
+    }
+    .candle:nth-child(1) { left: 30%; }
+    .candle:nth-child(2) { left: 50%; }
+    .candle:nth-child(3) { left: 70%; }
+
+    /* Sparkle Effect */
+    .sparkle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: radial-gradient(circle, #fff, transparent);
+      border-radius: 50%;
+      animation: sparkle 2s ease-in-out infinite;
+      z-index: 0;
+    }
+    .sparkle:nth-child(1) { top: 20%; left: 40%; animation-delay: 0s; }
+    .sparkle:nth-child(2) { top: 25%; left: 60%; animation-delay: 0.5s; }
+    .sparkle:nth-child(3) { top: 30%; left: 50%; animation-delay: 1s; }
+
+    /* Wish Granted Animation */
+    .wish-granted {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.5em;
+      color: #ffeb3b;
+      text-shadow: 0 0 10px #f06292, 0 0 20px #ab47bc;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 15px;
+      z-index: 10;
+      pointer-events: none;
+      animation: wishPop 2s ease forwards;
+    }
+
+    /* Genie Animation */
+    .genie-container {
+      position: fixed;
+      bottom: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      pointer-events: none;
+    }
+    .lamp {
+      width: 60px;
+      height: 60px;
+      background: url('https://img.icons8.com/color/48/000000/magic-lamp.png') no-repeat center/cover;
+      margin: 0 auto;
+      animation: pulseLamp 1s ease-in-out;
+    }
+    .genie {
+      width: 80px;
+      height: 80px;
+      background: url('https://img.icons8.com/color/48/000000/genie.png') no-repeat center/cover;
+      position: absolute;
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%) scale(0);
+      animation: genieRise 2s ease forwards 0.5s;
+    }
+    .genie::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      width: 20px;
+      height: 30px;
+      background: radial-gradient(circle, #ab47bc, transparent);
+      transform: translateX(-50%);
+      animation: smokeFade 1s ease forwards;
+    }
+
+    /* Form Styling */
+    .card-form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      margin-bottom: 30px;
+      animation: slideUp 1s ease;
+    }
+    .card-form input, .card-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #f06292;
+      border-radius: 8px;
+      font-size: 1em;
+      font-family: 'Roboto', sans-serif;
+    }
+    .card-form textarea {
+      resize: none;
+      height: 80px;
+    }
+    .card-form button {
+      background: #f06292;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .card-form button:hover {
+      background: #d81b60;
+    }
+    .surprise-btn {
+      background: #ab47bc;
+      margin-top: 10px;
+    }
+    .surprise-btn:hover {
+      background: #8e24aa;
+    }
+
+    /* Messages Styling */
+    .messages {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .message {
+      background: #fff3e0;
+      padding: 15px;
+      width: 200px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+      position: relative;
+      transform: rotate(-2deg);
+      transition: transform 0.3s;
+      clip-path: url(#scallop);
+    }
+    .message:nth-child(even) {
+      transform: rotate(2deg);
+    }
+    .message:hover {
+      transform: scale(1.05);
+    }
+    .message h3 {
+      color: #d81b60;
+      font-size: 1.1em;
+      margin-bottom: 5px;
+    }
+    .message p {
+      font-size: 0.9em;
+      color: #4a2c40;
+    }
+
+    /* Balloon Animation */
+    .balloon {
+      position: absolute;
+      width: 60px;
+      height: 80px;
+      border-radius: 50% 50% 40% 40%;
+      animation: float 6s ease-in-out infinite;
+      z-index: 0;
+    }
+    .balloon::before {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      width: 2px;
+      height: 20px;
+      background: #fff;
+      transform: translateX(-50%);
+    }
+    .balloon:nth-child(1) { left: 5%; background: radial-gradient(circle, #f06292, #d81b60); animation-delay: 0s; }
+    .balloon:nth-child(2) { left: 15%; background: radial-gradient(circle, #ab47bc, #8e24aa); animation-delay: 1s; }
+    .balloon:nth-child(3) { left: 25%; background: radial-gradient(circle, #ffeb3b, #fbc02d); animation-delay: 2s; }
+    .balloon:nth-child(4) { right: 5%; background: radial-gradient(circle, #80deea, #26c6da); animation-delay: 3s; }
+    .balloon:nth-child(5) { right: 15%; background: radial-gradient(circle, #f06292, #d81b60); animation-delay: 0.5s; }
+    .balloon:nth-child(6) { right: 25%; background: radial-gradient(circle, #ab47bc, #8e24aa); animation-delay: 1.5s; }
+    .balloon:nth-child(7) { left: 35%; background: radial-gradient(circle, #ffeb3b, #fbc02d); animation-delay: 2.5s; }
+    .balloon:nth-child(8) { right: 35%; background: radial-gradient(circle, #80deea, #26c6da); animation-delay: 3.5s; }
+
+    /* Falling Flowers Canvas */
+    #flowerCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(5deg); }
+      50% { transform: translateY(-20px) rotate(-5deg); }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes flicker {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.8); opacity: 0.7; }
+    }
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes wishPop {
+      0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+      50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+    }
+    @keyframes genieRise {
+      0% { transform: translateX(-50%) scale(0) translateY(0); opacity: 0; }
+      100% { transform: translateX(-50%) scale(1) translateY(-100px) rotate(10deg); opacity: 0; }
+    }
+    @keyframes smokeFade {
+      0% { opacity: 1; height: 30px; }
+      100% { opacity: 0; height: 0; }
+    }
+    @keyframes pulseLamp {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      h1 { font-size: 3em; }
+      .cake { width: 150px; height: 150px; }
+      .candle { width: 15px; height: 30px; top: -35px; }
+      .candle::before { width: 8px; height: 12px; top: -12px; }
+      .wish-granted { font-size: 1.8em; padding: 15px; }
+      .genie-container { bottom: 10%; }
+      .lamp, .genie { width: 40px; height: 40px; }
+      .genie { top: -60px; }
+      .card-form { padding: 15px; }
+      .message { width: 100%; }
+      .balloon, .sparkle { display: none; }
+    }
+    .gift-box {
+  font-size: 50px;
+  position: relative;
+  cursor: pointer;
+  margin: 20px auto;
+  animation: glow 2s ease-in-out infinite;
+}
+.gift-box::before {
+  content: 'Happy Birthday!';
+  display: none;
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #f06292;
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  font-family: 'Dancing Script';
+}
+.gift-box.open::before {
+  display: block;
+  animation: fadeIn 1s ease;
+}
+@keyframes glow {
+  0%, 100% { text-shadow: 0 0 10px #ffeb3b; }
+  50% { text-shadow: 0 0 20px #ffeb3b; }
+}
+  </style>
+</head>
+<body>
+  <canvas id="flowerCanvas"></canvas>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="sparkle"></div>
+  <div class="sparkle"></div>
+  <div class="sparkle"></div>
+
+  <div class="container">
+    <h1>Happy Birthday, Afrind!</h1>
+    <div class="cake">
+      <div class="candle"></div>
+      <div class="candle"></div>
+      <div class="candle"></div>
+    </div>
+    <p>Leave a sweet birthday wish below!</p>
+
+    <div class="card-form">
+      <input type="text" id="name" placeholder="Your Name" required>
+      <textarea id="message" placeholder="Your Birthday Wish" required></textarea>
+      <button onclick="addMessage()">Send Wish</button>
+      <button class="surprise-btn" onclick="triggerSurprise()">Surprise!</button>
+      <div class="gift-box" onclick="openGift()">🎁</div>
+    </div>
+
+    <div class="messages" id="messages"></div>
+  </div>
+
+  <svg>
+    <defs>
+      <clipPath id="scallop">
+        <path d="M0,10 C5,0 15,0 20,10 C25,20 35,20 40,10 C45,0 55,0 60,10 C65,20 75,20 80,10 C85,0 95,0 100,10 C105,20 115,20 120,10 C125,0 135,0 140,10 C145,20 155,20 160,10 C165,0 175,0 180,10 C185,20 195,20 200,10 C200,150 200,150 0,150 C0,150 0,150 0,10 Z" />
+      </clipPath>
+    </defs>
+  </svg>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    // Falling Flowers Animation
+    const canvas = document.getElementById('flowerCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const flowers = [];
+    const flowerImg = new Image();
+    flowerImg.src = 'https://img.icons8.com/color/48/000000/flower.png';
+
+    function createFlower() {
+      return {
+        x: Math.random() * canvas.width,
+        y: -20,
+        speed: 1 + Math.random() * 2,
+        opacity: 0.7 + Math.random() * 0.3,
+        scale: 0.5 + Math.random() * 0.5,
+        rotation: Math.random() * 360,
+        rotationSpeed: (Math.random() - 0.5) * 5
+      };
+    }
+
+    function drawFlower(flower) {
+      ctx.save();
+      ctx.globalAlpha = flower.opacity;
+      ctx.translate(flower.x, flower.y);
+      ctx.rotate((flower.rotation * Math.PI) / 180);
+      ctx.scale(flower.scale, flower.scale);
+      ctx.drawImage(flowerImg, -24, -24, 48, 48);
+      ctx.restore();
+    }
+
+    function updateFlowers() {
+      if (Math.random() < 0.1) flowers.push(createFlower());
+      flowers.forEach((flower, i) => {
+        flower.y += flower.speed;
+        flower.rotation += flower.rotationSpeed;
+        flower.opacity = Math.max(0, flower.opacity - (flower.y / canvas.height) * 0.01);
+        if (flower.y > canvas.height || flower.opacity <= 0) flowers.splice(i, 1);
+      });
+    }
+
+    function animateFlowers() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      updateFlowers();
+      flowers.forEach(drawFlower);
+      requestAnimationFrame(animateFlowers);
+    }
+
+    flowerImg.onload = () => animateFlowers();
+
+    // Initialize messages and clear localStorage on load
+    let messages = [];
+    localStorage.removeItem('birthdayMessages');
+
+    // Render existing messages
+    function renderMessages() {
+      const messagesDiv = document.getElementById('messages');
+      messagesDiv.innerHTML = '';
+      messages.forEach(msg => {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'message';
+        msgDiv.innerHTML = `<h3>${msg.name}</h3><p>${msg.message}</p>`;
+        messagesDiv.appendChild(msgDiv);
+      });
+    }
+
+    // Add new message with animations
+    function addMessage() {
+      const name = document.getElementById('name').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!name || !message) {
+        alert('Please fill in both name and message!');
+        return;
+      }
+
+      // Show wish granted animation
+      const wishDiv = document.createElement('div');
+      wishDiv.className = 'wish-granted';
+      wishDiv.textContent = 'Your Wish Has Been Granted!';
+      document.body.appendChild(wishDiv);
+
+      // Show genie animation
+      const genieContainer = document.createElement('div');
+      genieContainer.className = 'genie-container';
+      genieContainer.innerHTML = `
+        <div class="lamp"></div>
+        <div class="genie"></div>
+      `;
+      document.body.appendChild(genieContainer);
+
+      // Add message
+      messages.push({ name, message });
+      localStorage.setItem('birthdayMessages', JSON.stringify(messages));
+      renderMessages();
+
+      // Clear inputs and remove animations after they complete
+      setTimeout(() => {
+        document.getElementById('name').value = '';
+        document.getElementById('message').value = '';
+        wishDiv.remove();
+        genieContainer.remove();
+      }, 3000);
+    }
+
+    // Surprise confetti effect with hearts
+    function triggerSurprise() {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#f06292', '#ab47bc', '#ffeb3b', '#80deea'],
+        shapes: ['circle', 'square', 'heart']
+      });
+    }
+
+    // Initial render
+    renderMessages();
+
+    // Resize canvas on window resize
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+    function openGift() {
+  const box = document.querySelector('.gift-box');
+  box.classList.add('open');
+  confetti({ particleCount: 80, spread: 50, shapes: ['heart'], colors: ['#f06292', '#ab47bc'] });
+  setTimeout(() => { box.classList.remove('open'); }, 5000);
+}
+  </script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Hadia!</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            color: white;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh; /* Ensure full viewport height */
+            background-size: cover; /* Cover the entire background */
+            background-repeat: no-repeat;
+            overflow-x: hidden; /* Prevent horizontal scroll for confetti */
+        }
+
+        .container {
+            max-width: 700px; /* Increased container width */
+            background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+            padding: 30px; /* Add padding */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
+        }
+
+        h1 {
+            font-size: 3em; /* Larger heading */
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add text shadow */
+        }
+
+        .buttons {
+            margin-top: 30px;
+            display: flex; /* Use flexbox for button layout */
+            justify-content: center; /* Center the buttons */
+            flex-wrap: wrap; /* Allow buttons to wrap to the next line */
+        }
+
+        .wish-button {
+            background-color: white;
+            color: #ff5e62;
+            font-size: 1.4em; /* Larger button text */
+            padding: 15px 30px; /* Larger buttons */
+            border: none;
+            margin: 15px; /* Increased margin */
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 8px; /* More rounded corners */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Add button shadow */
+        }
+
+        .wish-button:hover {
+            background-color: #ff5e62;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        #wish-display {
+            font-size: 1.8em; /* Larger display text */
+            margin-top: 30px;
+            opacity: 0;
+            animation: fadeIn 1s 1s forwards; /* Delay animation */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Confetti Animation */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: gold;
+            top: -10px;
+            animation: confetti-fall 3s linear infinite;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+        @keyframes reveal {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    .hidden {
+            visibility: hidden; 
+            opacity: 0;
+            transition: visibility 0s, opacity 1s linear; 
+        }
+
+        .container.reveal {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container hidden">
+        <h1>🎉 Happy Birthday, Dear Hadia! 🎂</h1>
+        <div class="buttons">
+          <a href="axum.html" class="wish-button">axum 💖</a>
+          <a href="yuichi.html" class="wish-button">yuichi </a>
+          <a href="baba.html" class="wish-button">baba</a>
+          <a href="cake.html" class="wish-button">cake 🎂</a>
+        </div>
+        <p id="wish-display">🎈 May your day be filled with joy and laughter! 🎉</p>
+      </div>s
+
+    <script>
+        // Confetti effect
+        for (let i = 0; i < 150; i++) {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.backgroundColor = getRandomColor();
+            confetti.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(confetti);
+        }
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        function revealContent() {
+      const container = document.querySelector('.container');
+      container.classList.remove('hidden');
+      container.style.animation = 'reveal 1s ease-in-out';
+    }
+
+    // Initial surprise: Hide content and show a "Click to Reveal" button
+    const revealButton = document.createElement('button');
+    revealButton.textContent = 'Click to Reveal Surprise!';
+    revealButton.style.position = 'absolute';
+    revealButton.style.top = '50%';
+    revealButton.style.left = '50%';
+    revealButton.style.transform = 'translate(-50%, -50%)';
+    revealButton.style.padding = '20px 40px';
+    revealButton.style.fontSize = '1.5em';
+    revealButton.style.backgroundColor = '#ff5e62';
+    revealButton.style.color = 'white';
+    revealButton.style.border = 'none';
+    revealButton.style.borderRadius = '8px';
+    revealButton.style.cursor = 'pointer';
+    revealButton.addEventListener('click', () => {
+      revealButton.remove(); // Remove the button after click
+      revealContent();
+      // Optional: Play a sound effect when revealing
+      // const surpriseSound = new Audio('surprise_sound.mp3');
+      // surpriseSound.play();
+    });
+    document.body.appendChild(revealButton);
+    </script>
+</body>
+</html>
